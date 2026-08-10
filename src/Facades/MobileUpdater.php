@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array download(string $url, ?int $expectedSize = null, ?string $sha256 = null)
  * @method static array cancelDownload()
  * @method static array installApk()
+ * @method static array checkDownloadStatus()
  *
  * @see \Blutrixx\MobileUpdater\MobileUpdater
  */

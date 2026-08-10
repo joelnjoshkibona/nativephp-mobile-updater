@@ -1,5 +1,6 @@
 {
-    "name": "blutrixx/mobile-updater",
+    "name": "blutrixx/nativephp-mobile-updater",
+    "version": "1.0.0",
     "description": "Self-hosted APK updater plugin for NativePHP Mobile",
     "type": "nativephp-plugin",
     "license": "MIT",

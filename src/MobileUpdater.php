@@ -43,4 +43,13 @@ class MobileUpdater
     {
         return nativephp_call('MobileUpdater.InstallApk');
     }
+
+    /**
+     * Check if an APK is already downloaded and ready to install, without
+     * starting a new download. Returns ['ready' => bool, 'size' => int, 'inProgress' => bool].
+     */
+    public function checkDownloadStatus(): array
+    {
+        return nativephp_call('MobileUpdater.CheckDownloadStatus');
+    }
 }
