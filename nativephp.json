@@ -1,0 +1,46 @@
+{
+    "namespace": "MobileUpdater",
+    "bridge_functions": [
+        {
+            "name": "MobileUpdater.CheckVersion",
+            "android": "com.nativephp.mobileupdater.MobileUpdaterFunctions.CheckVersion",
+            "android_params": ["context"],
+            "description": "Read the currently installed app version from .env"
+        },
+        {
+            "name": "MobileUpdater.Download",
+            "android": "com.nativephp.mobileupdater.MobileUpdaterFunctions.Download",
+            "android_params": ["activity"],
+            "description": "Download APK from URL, emits DownloadProgress / DownloadComplete / DownloadFailed events"
+        },
+        {
+            "name": "MobileUpdater.CancelDownload",
+            "android": "com.nativephp.mobileupdater.MobileUpdaterFunctions.CancelDownload",
+            "android_params": ["context"],
+            "description": "Cancel an in-progress download (preserves partial file for resume)"
+        },
+        {
+            "name": "MobileUpdater.InstallApk",
+            "android": "com.nativephp.mobileupdater.MobileUpdaterFunctions.InstallApk",
+            "android_params": ["activity"],
+            "description": "Launch Android system package installer for the downloaded APK"
+        },
+        {
+            "name": "MobileUpdater.CheckDownloadStatus",
+            "android": "com.nativephp.mobileupdater.MobileUpdaterFunctions.CheckDownloadStatus",
+            "android_params": ["context"],
+            "description": "Check if an APK is already downloaded and ready to install ({ ready, size, inProgress })"
+        }
+    ],
+    "android": {
+        "permissions": [
+            "android.permission.REQUEST_INSTALL_PACKAGES",
+            "android.permission.POST_NOTIFICATIONS"
+        ]
+    },
+    "events": [
+        "Native\\Mobile\\Events\\MobileUpdater\\DownloadProgress",
+        "Native\\Mobile\\Events\\MobileUpdater\\DownloadComplete",
+        "Native\\Mobile\\Events\\MobileUpdater\\DownloadFailed"
+    ]
+}

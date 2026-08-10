@@ -1,0 +1,27 @@
+{
+    "name": "blutrixx/mobile-updater",
+    "description": "Self-hosted APK updater plugin for NativePHP Mobile",
+    "type": "nativephp-plugin",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Blutrixx\\MobileUpdater\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Blutrixx\\MobileUpdater\\MobileUpdaterServiceProvider"
+            ],
+            "aliases": {
+                "MobileUpdater": "Blutrixx\\MobileUpdater\\Facades\\MobileUpdater"
+            }
+        },
+        "nativephp": {
+            "manifest": "nativephp.json"
+        }
+    },
+    "require": {
+        "php": "^8.1"
+    }
+}
