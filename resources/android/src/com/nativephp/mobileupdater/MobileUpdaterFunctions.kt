@@ -109,11 +109,36 @@ object MobileUpdaterFunctions {
         }
     }
 
+    // The versionName (human-readable "1.0.1") is read from a bundled Laravel .env /
+    // bundle_meta.json above -- fine for display, but NOT what decides whether an
+    // update is newer: Android's own package manager treats versionCode as the sole
+    // authoritative signal (it refuses to install an APK whose versionCode isn't
+    // strictly greater than what's installed), and versionCode is guaranteed to
+    // increase on every real build. Read it straight from PackageInfo -- the actual
+    // installed value -- not re-derived from any bundled config, so it can never
+    // drift from what Android itself considers this install to be.
+    private fun getInstalledVersionCode(context: Context): Long = try {
+        val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            packageInfo.longVersionCode
+        } else {
+            @Suppress("DEPRECATION")
+            packageInfo.versionCode.toLong()
+        }
+    } catch (e: Exception) {
+        Log.w(TAG, "getInstalledVersionCode: could not read PackageInfo", e)
+        0L
+    }
+
     // ── CheckVersion ─────────────────────────────────────────────────────────
 
     class CheckVersion(private val context: Context) : BridgeFunction {
         override fun execute(parameters: Map<String, Any>): Map<String, Any> {
             Log.d(TAG, "CheckVersion called")
+            // Computed outside the try below: an independent PackageInfo read that
+            // should still succeed (and be reported) even if the .env/bundle_meta.json
+            // versionName lookup below fails for some reason.
+            val versionCode = getInstalledVersionCode(context)
             return try {
                 val envFile = File(
                     File(context.getDir("storage", Context.MODE_PRIVATE), DIR_LARAVEL),
@@ -127,7 +152,7 @@ object MobileUpdaterFunctions {
                     Log.d(TAG, "CheckVersion: .env not extracted yet — reading bundle_meta.json")
                     readBundleMeta()
                 }
-                Log.d(TAG, "CheckVersion: version=$version")
+                Log.d(TAG, "CheckVersion: version=$version, versionCode=$versionCode")
 
                 // If the app that's running RIGHT NOW is the same version as a previously
                 // completed download, that download's job is done — the update was already
@@ -143,10 +168,10 @@ object MobileUpdaterFunctions {
                     }
                 }
 
-                BridgeResponse.success(mapOf("version" to version))
+                BridgeResponse.success(mapOf("version" to version, "versionCode" to versionCode))
             } catch (e: Exception) {
                 Log.e(TAG, "CheckVersion failed", e)
-                BridgeResponse.success(mapOf("version" to "DEBUG"))
+                BridgeResponse.success(mapOf("version" to "DEBUG", "versionCode" to versionCode))
             }
         }
 
