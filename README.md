@@ -9,7 +9,7 @@ Current release: `v1.0.0`
 ## Requirements
 
 - PHP ^8.1
-- A Laravel app running under `nativephp/mobile`
+- A Laravel app running under `nativephp/mobile` ^3.3 (enforced by `composer.json`; 4.x is not supported yet)
 - Android: requests `REQUEST_INSTALL_PACKAGES` (to launch the system installer) and `POST_NOTIFICATIONS` (download progress notification) permissions.
 - A place to host APKs + an update manifest — see [Recommended manifest shape](#recommended-manifest-shape) below.
 
