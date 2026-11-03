@@ -33,6 +33,7 @@
         }
     ],
     "android": {
+        "min_version": 26,
         "permissions": [
             "android.permission.REQUEST_INSTALL_PACKAGES",
             "android.permission.POST_NOTIFICATIONS"
@@ -42,5 +43,9 @@
         "Native\\Mobile\\Events\\MobileUpdater\\DownloadProgress",
         "Native\\Mobile\\Events\\MobileUpdater\\DownloadComplete",
         "Native\\Mobile\\Events\\MobileUpdater\\DownloadFailed"
-    ]
+    ],
+
+    "ios": {
+        "min_version": "18.0"
+    }
 }
