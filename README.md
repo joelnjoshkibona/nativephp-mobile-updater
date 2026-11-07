@@ -4,12 +4,12 @@ A [NativePHP Mobile](https://nativephp.com) plugin for self-hosted over-the-air 
 
 Composer package: `blutrixx/nativephp-mobile-updater`
 Repo: `joelnjoshkibona/nativephp-mobile-updater`
-Current release: `v1.0.0`
+Current release: `v1.1.1`
 
 ## Requirements
 
 - PHP ^8.1
-- A Laravel app running under `nativephp/mobile` ^3.3 (enforced by `composer.json`; 4.x is not supported yet)
+- A Laravel app running under `nativephp/mobile` ^3.3 or ^4.0 (enforced by `composer.json`; used on 4.7 in Hodie)
 - Android: requests `REQUEST_INSTALL_PACKAGES` (to launch the system installer) and `POST_NOTIFICATIONS` (download progress notification) permissions.
 - A place to host APKs + an update manifest — see [Recommended manifest shape](#recommended-manifest-shape) below.
 
@@ -59,10 +59,10 @@ Laravel auto-discovers `MobileUpdaterServiceProvider` and the `MobileUpdater` fa
 | Method | Sync? | Returns | Notes |
 |---|---|---|---|
 | `checkVersion()` | Sync | `array` | Reads the **currently installed** app version from the embedded `.env` — does not check a remote manifest itself |
-| `download(string $url, ?int $expectedSize = null, ?string $sha256 = null)` | **Async** | `array` | Starts the download; fires `DownloadProgress`/`DownloadComplete`/`DownloadFailed` |
+| `download(string $url, ?int $expectedSize = null, ?string $sha256 = null, ?string $version = null)` | **Async** | `array` | Starts the download; fires `DownloadProgress`/`DownloadComplete`/`DownloadFailed` |
 | `cancelDownload()` | Sync | `array` | Cancels an in-progress download; the partial file is kept so a later `download()` call to the same URL can resume |
 | `installApk()` | Sync | `array` | Launches the Android system package installer for the already-downloaded APK |
-| `checkDownloadStatus()` | Sync | `{ready: bool, size: int, inProgress: bool}` | Check whether an APK is already downloaded and ready to install, without starting a new download |
+| `checkDownloadStatus(?string $expectedVersion = null)` | Sync | `{ready: bool, size: int, inProgress: bool}` | Check whether an APK is already downloaded and ready to install, without starting a new download |
 
 ```php
 use Blutrixx\MobileUpdater\Facades\MobileUpdater;
